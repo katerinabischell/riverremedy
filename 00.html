@@ -103,18 +103,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Source</strong>: <em>Muestreo de aguas, suelos, vegetales, sangre humana y animales, peces y sedimentos en puntos seleccionados en la cuenca del Río Pilcomayo en Chuquisaca (2006)</em></p>
 </blockquote>
 </section>
-<section id="data-visualizations" class="level2">
-<h2 class="anchored" data-anchor-id="data-visualizations">Data Visualizations</h2>
-<section id="water-metals" class="level3">
-<h3 class="anchored" data-anchor-id="water-metals">Water Metals</h3>
+<section id="libraries" class="level2">
+<h2 class="anchored" data-anchor-id="libraries">Libraries</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: package 'ggplot2' was built under R version 4.4.1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>water <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ITA_water_2006.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+</div>
+</section>
+<section id="data-visualizations" class="level2">
+<h2 class="anchored" data-anchor-id="data-visualizations">Data Visualizations</h2>
+</section>
+<section id="water-samples" class="level2">
+<h2 class="anchored" data-anchor-id="water-samples">Water Samples</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>water <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ITA_water_2006.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Rows: 12 Columns: 14
 ── Column specification ────────────────────────────────────────────────────────
@@ -126,8 +146,7 @@ time  (1): Time
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view columns</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(water)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(water)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 14
   Municipality `Point No.` Location      Time  `Sampling Date`    pH `Pb (mg/l)`
@@ -142,7 +161,378 @@ time  (1): Time
 #   `Zn (mg/l)` &lt;dbl&gt;, `X (UTM)` &lt;dbl&gt;, `Y (UTM)` &lt;dbl&gt;, `Elevation (m)` &lt;dbl&gt;</code></pre>
 </div>
 </div>
+<section id="lead-in-water" class="level3">
+<h3 class="anchored" data-anchor-id="lead-in-water">Lead in Water</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(water, <span class="fu">aes</span>(<span class="at">x =</span> Location, <span class="at">y =</span> <span class="st">`</span><span class="at">Pb (mg/l)</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Lead Concentration in Water Samples"</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Location"</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"mg/L"</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="00_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="1440"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
+</section>
+<section id="soil-samples" class="level2">
+<h2 class="anchored" data-anchor-id="soil-samples">Soil Samples</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>soil <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ITA_soil_2006.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 11 Columns: 15
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr   (4): Municipality, Location, Sample Type, Date
+dbl  (10): Point No., Pb (mg/kg), Sb (mg/kg), Hg (mg/kg), As (mg/kg), Cd (mg...
+time  (1): Sampling Time
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(soil)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 15
+  Municipality `Point No.` Location   `Sample Type` `Sampling Time` `Pb (mg/kg)`
+  &lt;chr&gt;              &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;         &lt;time&gt;                 &lt;dbl&gt;
+1 Culpina                1 Río Pilaya Soil          14:20                   36.2
+2 Las Carreras           2 Puron de … Soil          10:00                   63.8
+3 Las Carreras           3 Monte San… Soil          15:10                   44.2
+4 Camargo                4 La Vidrie… Soil          10:00                   46.9
+5 Camargo                5 La Quemada Soil          14:30                   64.9
+6 Incahuasi              6 El Fuerte… Soil          12:50                   32.7
+# ℹ 9 more variables: `Sb (mg/kg)` &lt;dbl&gt;, `Hg (mg/kg)` &lt;dbl&gt;,
+#   `As (mg/kg)` &lt;dbl&gt;, `Cd (mg/kg)` &lt;dbl&gt;, `Zn (mg/kg)` &lt;dbl&gt;,
+#   `X (UTM)` &lt;dbl&gt;, `Y (UTM)` &lt;dbl&gt;, `Elevation (m)` &lt;dbl&gt;, Date &lt;chr&gt;</code></pre>
+</div>
+</div>
+<section id="zinc-in-soil" class="level3">
+<h3 class="anchored" data-anchor-id="zinc-in-soil">Zinc in Soil</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(soil, <span class="fu">aes</span>(<span class="at">x =</span> Location, <span class="at">y =</span> <span class="st">`</span><span class="at">Zn (mg/kg)</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"darkgreen"</span>) <span class="sc">+</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Zinc Concentration in Soil Samples"</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Location"</span>,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"mg/kg"</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="00_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="sediment-samples" class="level2">
+<h2 class="anchored" data-anchor-id="sediment-samples">Sediment Samples</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>sediment <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ITA_sed_2006.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 12 Columns: 15
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr   (4): Municipality, Location, Sample Type, Date
+dbl  (10): Point No., Pb (mg/kg), Sb (mg/kg), Hg (mg/kg), As (mg/kg), Cd (mg...
+time  (1): Sampling Time
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sediment)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 15
+  Municipality `Point No.` Location   `Sample Type` `Sampling Time` `Pb (mg/kg)`
+  &lt;chr&gt;              &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;         &lt;time&gt;                 &lt;dbl&gt;
+1 Culpina                1 Río Pilaya Sediment      14:55                   30.5
+2 Las Carreras           2 Purón de … Sediment      09:24                   56.4
+3 Las Carreras           3 Monte San… Sediment      15:45                   20.2
+4 Camargo                4 La Vidrie… Sediment      09:30                   26.7
+5 Camargo                5 La Quemada Sediment      09:30                   31.7
+6 Incahuasi              6 El Fuerte… Sediment      10:45                   14.7
+# ℹ 9 more variables: `Sb (mg/kg)` &lt;dbl&gt;, `Hg (mg/kg)` &lt;dbl&gt;,
+#   `As (mg/kg)` &lt;dbl&gt;, `Cd (mg/kg)` &lt;dbl&gt;, `Zn (mg/kg)` &lt;dbl&gt;,
+#   `X (UTM)` &lt;dbl&gt;, `Y (UTM)` &lt;dbl&gt;, `Elevation (m)` &lt;dbl&gt;, Date &lt;chr&gt;</code></pre>
+</div>
+</div>
+<section id="mercury-in-sediments" class="level3">
+<h3 class="anchored" data-anchor-id="mercury-in-sediments">Mercury in Sediments</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sediment, <span class="fu">aes</span>(<span class="at">x =</span> Location, <span class="at">y =</span> <span class="st">`</span><span class="at">Zn (mg/kg)</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"orange"</span>) <span class="sc">+</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Zinc Concentration in Sediment Samples"</span>,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Location"</span>,</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"mg/kg"</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="00_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="vegetation-samples" class="level2">
+<h2 class="anchored" data-anchor-id="vegetation-samples">Vegetation Samples</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>veg <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ITA_veg_2006.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 21 Columns: 14
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (5): Municipality, Location, Crop, Date, Hg (mg/kg)
+dbl (9): Point No., X (UTM), Y (UTM), Elevation (m), Pb (mg/kg), Sb (mg/kg),...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(veg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 14
+  Municipality `Point No.` Location    `X (UTM)` `Y (UTM)` `Elevation (m)` Crop 
+  &lt;chr&gt;              &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;           &lt;dbl&gt; &lt;chr&gt;
+1 Culpina                1 Río Pilaya    372486.  7660544.             814 Onion
+2 Culpina                1 Río Pilaya    372486.  7660544.             814 Toma…
+3 Las Carreras           2 Purón de E…   267173.  7621425.            2431 Fava…
+4 Las Carreras           2 Purón de E…   267173.  7621425.            2431 Onion
+5 Las Carreras           3 Monte Sand…   271255.  7656927             2311 Onion
+6 Las Carreras           3 Monte Sand…   271255.  7656927             2311 Carr…
+# ℹ 7 more variables: Date &lt;chr&gt;, `Pb (mg/kg)` &lt;dbl&gt;, `Sb (mg/kg)` &lt;dbl&gt;,
+#   `Hg (mg/kg)` &lt;chr&gt;, `As (mg/kg)` &lt;dbl&gt;, `Cd (mg/kg)` &lt;dbl&gt;,
+#   `Zn (mg/kg)` &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<section id="lead-in-vegetables" class="level3">
+<h3 class="anchored" data-anchor-id="lead-in-vegetables">Lead in Vegetables</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(veg, <span class="fu">aes</span>(<span class="at">x =</span> Crop, <span class="at">y =</span> <span class="st">`</span><span class="at">Zn (mg/kg)</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"purple"</span>) <span class="sc">+</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Zinc Concentration in Vegetables"</span>,</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Crop Type"</span>,</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"mg/kg"</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="00_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="fish-samples" class="level2">
+<h2 class="anchored" data-anchor-id="fish-samples">Fish Samples</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>fish <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ITA_fish_2006.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 24 Columns: 13
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr  (4): Municipality, Location, Sample Type, Sample Date
+dbl  (8): Point No., Pb (mg/kg), As (mg/kg), Cd (mg/kg), Point, X (UTM), Y (...
+time (1): Sample Time
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(fish)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 13
+  Municipality `Point No.` Location    `Sample Type` `Sample Date` `Sample Time`
+  &lt;chr&gt;              &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;         &lt;chr&gt;         &lt;time&gt;       
+1 Culpina                1 Río Pilaya  Head          09-10-2005    13:33        
+2 Culpina                1 Río Pilaya  Muscle        09-10-2005    13:33        
+3 Las Carreras           2 Purón de E… Head          10-10-2005    09:00        
+4 Las Carreras           2 Purón de E… Muscle        10-10-2005    09:00        
+5 Las Carreras           3 Monte Sand… Fish          10-10-2005    15:25        
+6 Las Carreras           3 Monte Sand… Fish          10-10-2005    15:25        
+# ℹ 7 more variables: `Pb (mg/kg)` &lt;dbl&gt;, `As (mg/kg)` &lt;dbl&gt;,
+#   `Cd (mg/kg)` &lt;dbl&gt;, Point &lt;dbl&gt;, `X (UTM)` &lt;dbl&gt;, `Y (UTM)` &lt;dbl&gt;,
+#   `Elevation (m)` &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<section id="lead-in-fish-muscle-tissue" class="level3">
+<h3 class="anchored" data-anchor-id="lead-in-fish-muscle-tissue">Lead in Fish Muscle Tissue</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(fish, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Sample Type</span><span class="st">`</span>, <span class="at">y =</span> <span class="st">`</span><span class="at">Pb (mg/kg)</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Lead Concentration in Fish Samples"</span>,</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Sample Type"</span>,</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"mg/kg"</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="00_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="human-blood-samples" class="level2">
+<h2 class="anchored" data-anchor-id="human-blood-samples">Human Blood Samples</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>human <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ITA_human_2006.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 110 Columns: 17
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr  (4): Municipality, Location, Sex, Sampling Date
+dbl (13): Point No., Age, As [µg/dl], Pb [µg/dl] Children, Pb [µg/dl] Adults...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(human)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 17
+  Municipality `Point No.` Location     Age Sex   `As [µg/dl]`
+  &lt;chr&gt;              &lt;dbl&gt; &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt;
+1 Culpina                1 Río Pilaya    39 F             0.27
+2 Culpina                1 Río Pilaya    55 F             0.25
+3 Culpina                1 Río Pilaya    49 F             0.22
+4 Culpina                1 Río Pilaya    30 F             0.28
+5 Culpina                1 Río Pilaya    15 F             0.28
+6 Culpina                1 Río Pilaya    13 F             0.25
+# ℹ 11 more variables: `Pb [µg/dl] Children` &lt;dbl&gt;, `Pb [µg/dl] Adults` &lt;dbl&gt;,
+#   `Cd [µg/dl]` &lt;dbl&gt;, `Sampling Date` &lt;chr&gt;, `X (UTM)` &lt;dbl&gt;,
+#   `Y (UTM)` &lt;dbl&gt;, `Elevation (m)` &lt;dbl&gt;, `Mean As [µg/dl]` &lt;dbl&gt;,
+#   `Mean Pb [µg/dl] Children` &lt;dbl&gt;, `Mean Pb [µg/dl] Adults` &lt;dbl&gt;,
+#   `Mean Cd [µg/dl]` &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<section id="lead-in-child-human-blood" class="level3">
+<h3 class="anchored" data-anchor-id="lead-in-child-human-blood">Lead in Child Human Blood</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(human, <span class="fu">aes</span>(<span class="at">x =</span> Location, <span class="at">y =</span> <span class="st">`</span><span class="at">Pb [µg/dl] Children</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"brown"</span>) <span class="sc">+</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Lead Concentration in Human Blood (Children)"</span>,</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Location"</span>,</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"µg/dl"</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 97 rows containing missing values or values outside the scale range
+(`geom_col()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="00_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="lead-in-adult-human-blood" class="level3">
+<h3 class="anchored" data-anchor-id="lead-in-adult-human-blood">Lead in Adult Human Blood</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(human, <span class="fu">aes</span>(<span class="at">x =</span> Location, <span class="at">y =</span> <span class="st">`</span><span class="at">Pb [µg/dl] Adults</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"darkred"</span>) <span class="sc">+</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Lead Concentration in Human Blood (Adults)"</span>,</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Location"</span>,</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"µg/dl"</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 13 rows containing missing values or values outside the scale range
+(`geom_col()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="00_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="animal-blood-samples" class="level2">
+<h2 class="anchored" data-anchor-id="animal-blood-samples">Animal Blood Samples</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>animal <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ITA_animal_2006.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 77 Columns: 15
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr   (4): Sample ID, Location, Sampling Date, Animal
+dbl  (10): Pb (mg/dL), Cd (mg/dL), As (mg/dL), X (UTM), Y (UTM), Elevation (...
+time  (1): Sampling Time
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(animal)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 15
+  `Sample ID` Location `Sampling Date` `Sampling Time` `Pb (mg/dL)` `Cd (mg/dL)`
+  &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt;           &lt;time&gt;                 &lt;dbl&gt;        &lt;dbl&gt;
+1 Blood No. 1 Río Pil… 09-10-2005      10:42                   0.2          0.18
+2 Blood No. 2 Río Pil… 09-10-2005      10:46                   0.13         0.12
+3 Blood No. 3 Río Pil… 09-10-2005      10:50                   0.04         0.37
+4 Blood No. 4 Río Pil… 09-10-2005      10:55                   0.06         0.4 
+5 Blood No. 5 Río Pil… 09-10-2005      11:01                   0.2          0.18
+6 Blood No. 6 Río Pil… 09-10-2005      11:06                   0.09         0.15
+# ℹ 9 more variables: `As (mg/dL)` &lt;dbl&gt;, `X (UTM)` &lt;dbl&gt;, `Y (UTM)` &lt;dbl&gt;,
+#   `Elevation (m)` &lt;dbl&gt;, `Point No.` &lt;dbl&gt;, Animal &lt;chr&gt;,
+#   `Mean Pb (mg/dl)` &lt;dbl&gt;, `Mean Cd (mg/dl)` &lt;dbl&gt;, `Mean As (mg/dl)` &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<section id="lead-in-animal-blood" class="level3">
+<h3 class="anchored" data-anchor-id="lead-in-animal-blood">Lead in Animal Blood</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(animal, <span class="fu">aes</span>(<span class="at">x =</span> Animal, <span class="at">y =</span> <span class="st">`</span><span class="at">Pb (mg/dL)</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"darkred"</span>) <span class="sc">+</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Lead Concentration in Animal Blood Samples"</span>,</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Animal Type"</span>,</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"mg/dL"</span></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="00_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="conclusions" class="level1">
+<h1>Conclusions</h1>
+<p>This is a preliminary visualization of the 2006 Pilcomayo River metals assessment. Further statistical summaries and comparisons to WHO or Bolivian environmental standards can be added as needed.</p>
 </section>
 
 </main>

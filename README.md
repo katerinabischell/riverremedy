@@ -16,6 +16,4 @@ It includes data on metals in water, soil, sediments, fish, human blood, animal 
 - Install `quarto`, `ggplot2`, and `readr`
 - Render `river_remedy.qmd` to view the plots
 
-## License
 
-MIT
