@@ -1,0 +1,27 @@
+---
+title: "River Remedy Data Visualization"
+format: html
+editor: visual
+---
+
+## Background
+
+This project visualizes results from the *Fundación Instituto de Tecnología de Alimentos (I.T.A.)* study conducted in 2006, focused on the Pilcomayo River basin in Chuquisaca, Bolivia. The study analyzed metals in water, soil, sediments, fish, human and animal blood, and plants.
+
+> **Source**: *Muestreo de aguas, suelos, vegetales, sangre humana y animales, peces y sedimentos en puntos seleccionados en la cuenca del Río Pilcomayo en Chuquisaca (2006)*
+
+## Data Visualizations
+
+### Water Metals
+
+```{r}
+library(readr)
+library(ggplot2)
+
+# load
+water <- read_csv("data/ITA_water_2006.csv")
+
+# view columns
+head(water)
+
+```
