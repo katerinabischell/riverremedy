@@ -1,5 +1,5 @@
 ---
-title: "Bolivia Pilcomayo Heavy Metals Study - with WHO and CDC guidelines"
+title: "Bolivia Pilcomayo Heavy Metals Study - with WHO/CDC/codex guidelines"
 author: "River Remedy"
 date: today
 format:
