@@ -1,7 +1,7 @@
 # River Remedy
 **Heavy-Metal Contamination in the Pilcomayo River (Chuquisaca, Bolivia, 2006)**
 
-This repo revisits the 2006 Fundación I.T.A. field survey of **water, soil, sediment, vegetation, fish, human blood, and animal blood** samples collected across twelve Pilcomayo-basin communities. All concentrations are benchmarked against WHO drinking-water limits, Codex Alimentarius food standards, CDC blood-lead guidance, and Bolivian regulatory thresholds. Primary insights and visuals live in a Quarto report; tidy data and helper scripts let you reproduce or extend every plot.
+This repo revisits the 2006 Fundación I.T.A. field survey of **water, soil, sediment, vegetation, fish, human blood, and animal blood** samples collected across twelve Pilcomayo-basin communities. All concentrations are benchmarked against WHO drinking-water limits, Codex Alimentarius food standards, and CDC blood-lead guidance. Primary insights and visuals live in a Quarto report; tidy data and helper scripts let you reproduce or extend every plot.
 
 ## Repository Structure
 
