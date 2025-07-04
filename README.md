@@ -62,8 +62,7 @@ riverremedy/
 
 - **📊 Main Report**: `outputs/html/final-report.html` - Interactive report with all findings
 - **📈 Data Exploration**: `src/analysis/data-exploration.qmd` - Initial data analysis
-- **🏭 Contamination Analysis**: `src/analysis/contamination-analysis.qmd` - Heavy metal analysis
-- **📋 Standards Comparison**: `src/analysis/standards-exploration.qmd` - Regulatory benchmarking
+
 
 ## Data & Reference Standards
 
