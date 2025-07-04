@@ -3,13 +3,13 @@ title: "Bolivia Pilcomayo Heavy Metals Study - Enhanced Visualization"
 author: "Katerina Bischel"
 date: "`r Sys.Date()`"
 output:
-  pdf_document:
-    toc: true
   html_document:
     theme: flatly
     toc: true
     toc_float: true
     code_folding: hide
+  pdf_document:
+    toc: true
 ---
 
 ```{r setup, include=FALSE}
