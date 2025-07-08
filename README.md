@@ -61,7 +61,6 @@ riverremedy/
 ## Key Files
 
 - **📊 Main Report**: `outputs/html/final-report.html` - Interactive report with all findings
-- **📈 Data Exploration**: `src/analysis/data-exploration.qmd` - Initial data analysis
 
 
 ## Data & Reference Standards
