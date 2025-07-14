@@ -36,11 +36,11 @@ This repository contains multi-temporal environmental contamination analyses spa
 | **2006 Baseline** | `outputs/html/final-report-updated.html` | Multi-matrix community contamination | Historical Reference |
 | **2011 Cerro Rico** | `src/analysis/data-exploration.qmd/strosnider_2011_*.html` | **Acid mine drainage extreme contamination** | **Most Comprehensive** |
 
-### 2024 Analysis Files ⭐ **NEW**
+### 2024 Analysis Files 
 | File | Language | Description |
 |------|----------|-------------|
-| `pilcomayo.net_spanish.qmd` | 🇪🇸 Spanish | Original analysis for local stakeholders |
-| `pilcomayo.net_english.html` | 🇪🇸 English | Rendered interactive report |
+| `pilcomayo.net_spanish.qmd` | Spanish | Original analysis for local stakeholders |
+| `pilcomayo.net_english.html` | English | Rendered interactive report |
 | `calidad_agua_20250711060422.csv` | Data | TNC water quality monitoring |
 | `calidad_sedimentos_20250711060913.csv` | Data | TNC sediment quality monitoring |
 
@@ -161,7 +161,7 @@ riverremedy/
 | **CDC** (2021) *Blood Lead Reference Value* | Health impact thresholds | Human/animal blood assessment |
 | **Bolivia Law 1333** (1992) | National discharge limits | Regulatory compliance analysis |
 
-## 🔄 Reproducing Analysis
+## Reproducing Analysis
 
 ### Requirements
 ```r
@@ -190,7 +190,7 @@ install.packages(c(
 2. Data automatically loaded from `data/raw/ITA_*.csv`
 3. Render for complete interactive report
 
-## 🎯 Key Findings Summary
+## Key Findings Summary
 
 ### 2024 Monitoring Results
 - **Current contamination status** in lithium mining impact zones
